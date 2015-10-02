@@ -653,13 +653,6 @@ $("#scalebar").removeClass("active");
 $("#external").addClass("active");
 task.map.removeInteraction(task.draw_scalebar);
 task.map.addInteraction(task.draw_external);
-} else {
-$("#step2").toggle();
-$("#step3").toggle();
-$("#external").removeClass("active");
-$("#internal").addClass("active");
-task.map.removeInteraction(task.draw_external);
-task.map.addInteraction(task.draw_internal);
 }});
 
 $('.btn-answer').off('click').on('click', function(evt) {
