@@ -352,7 +352,7 @@ Task DOM for loading the S3 Images using class="skeleton" to identify the elemen
 			<div class="modal-footer">
 				<a id="prevBtn" href="#" onclick="showStep('prev')" class="btn btn-default">Previous</a>
 				<a id="nextBtn" href="#" onclick="showStep('next')" class="btn btn-success">Next</a>
-				<a id="startContrib" href="../amphsCD/newtask" class="btn btn-primary" style="display:none"><i class="glyphicon glyphicon-thumbs-up"></i> Let's start!</a>
+				<a id="startContrib" href="../HyperAmphsH/newtask" class="btn btn-primary" style="display:none"><i class="glyphicon glyphicon-thumbs-up"></i> Let's start!</a>
 			</div>
 		</div>
 	</div>
@@ -385,7 +385,7 @@ Task DOM for loading the S3 Images using class="skeleton" to identify the elemen
 
 <script>
 function loadUserProgress() {
-pybossa.userProgress('amphsCD').done(function(data){
+pybossa.userProgress('HyperAmphsH').done(function(data){
 
 console.log('Tasks done so far: ' + data.done);
 
@@ -1084,5 +1084,5 @@ $('#imgLink').tooltip();
 
 });
 
-pybossa.run('amphsCD');
+pybossa.run('HyperAmphsH');
 </script>
