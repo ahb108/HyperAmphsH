@@ -89,7 +89,7 @@ Task DOM for loading the S3 Images using class="skeleton" to identify the elemen
 			<a class="btn btn-info btn-sm" id="imgLink" target="_blank" data-toggle="tooltip" data-placement="top" title="Opens in a new window" href="http://community.micropasts.org/category/crowdsourcing-support"><i class="glyphicon glyphicon-book"></i> Community Help</a>
 		</div>
 		<div id="step1">
-			<h1>Step 1 of 3. Draw the scalebar and enter its length in metres (both required):</h1>
+			<h1>Step 1 of 3. Draw a line across the scalebar and enter its length in the box:</h1>
 			<div class="btn-group">
 				<button id="status" type="button" class="btn btn-default btn-type disabled" name="loading" value="loading" title="Whether your task has fully loaded or not.">
 					Loading photo
@@ -647,21 +647,10 @@ task.answer = {
 'scalebar': [],
 'dimension': 0,
 'external': [],
-'internal': [],
-'midline': [],
-'neckjoin': [],
-'lhandle': [],
-'rhandle': [],
 'section': [],
-'comments': "None",
 'img': task.info.url_b};
 task.scalebar = false;
 task.external = false;
-task.internal = false;
-task.midline = false;
-task.neckjoin = false;
-task.lhandle = false;
-task.rhandle = false;
 task.section = false;
 }
 else {
@@ -694,16 +683,6 @@ if ($("#scalebar").hasClass("active")) {
 task.map.addInteraction(task.draw_scalebar);
 } else if ($("#external").hasClass("active")) {
 task.map.addInteraction(task.draw_external);
-} else if ($("#internal").hasClass("active")) {
-task.map.addInteraction(task.draw_internal);
-} else if ($("#midline").hasClass("active")) {
-task.map.addInteraction(task.draw_midline);
-} else if ($("#neckjoin").hasClass("active")) {
-task.map.addInteraction(task.draw_neckjoin);
-} else if ($("#lhandle").hasClass("active")) {
-task.map.addInteraction(task.draw_lhandle);
-} else if ($("#rhandle").hasClass("active")) {
-task.map.addInteraction(task.draw_rhandle);
 } else {
 task.map.addInteraction(task.draw_section);
 }
@@ -716,16 +695,6 @@ if ($("#scalebar").hasClass("active")) {
 task.map.removeInteraction(task.draw_scalebar);
 } else if ($("#external").hasClass("active")) {
 task.map.removeInteraction(task.draw_external);
-} else if ($("#internal").hasClass("active")) {
-task.map.removeInteraction(task.draw_internal);
-} else if ($("#midline").hasClass("active")) {
-task.map.removeInteraction(task.draw_midline);
-} else if ($("#neckjoin").hasClass("active")) {
-task.map.removeInteraction(task.draw_neckjoin);
-} else if ($("#lhandle").hasClass("active")) {
-task.map.removeInteraction(task.draw_lhandle);
-} else if ($("#rhandle").hasClass("active")) {
-task.map.removeInteraction(task.draw_rhandle);
 } else {
 task.map.removeInteraction(task.draw_section);
 }
@@ -756,56 +725,6 @@ task.source_external.removeFeature(features[i]);
 }
 task.map.addInteraction(task.draw_external);
 task.external = false;
-} else if ($("#internal").hasClass("active")) {
-task.map.removeInteraction(task.draw_internal);
-task.map.removeInteraction(select);
-task.map.removeInteraction(modify);
-var features = task.source_external.getFeatures();
-for(i=0;i<features.length;i++) {
-task.source_internal.removeFeature(features[i]);
-}
-task.map.addInteraction(task.draw_internal);
-task.internal = false;
-} else if ($("#midline").hasClass("active")) {
-task.map.removeInteraction(task.draw_midline);
-task.map.removeInteraction(select);
-task.map.removeInteraction(modify);
-var features = task.source_midline.getFeatures();
-for(i=0;i<features.length;i++) {
-task.source_midline.removeFeature(features[i]);
-}
-task.map.addInteraction(task.draw_midline);
-task.midline = false;
-} else if ($("#neckjoin").hasClass("active")) {
-task.map.removeInteraction(task.draw_neckjoin);
-task.map.removeInteraction(select);
-task.map.removeInteraction(modify);
-var features = task.source_neckjoin.getFeatures();
-for(i=0;i<features.length;i++) {
-task.source_neckjoin.removeFeature(features[i]);
-}
-task.map.addInteraction(task.draw_neckjoin);
-task.neckjoin = false;
-} else if ($("#lhandle").hasClass("active")) {
-task.map.removeInteraction(task.draw_lhandle);
-task.map.removeInteraction(select);
-task.map.removeInteraction(modify);
-var features = task.source_lhandle.getFeatures();
-for(i=0;i<features.length;i++) {
-task.source_lhandle.removeFeature(features[i]);
-}
-task.map.addInteraction(task.draw_lhandle);
-task.lhandle = false;
-} else if ($("#rhandle").hasClass("active")) {
-task.map.removeInteraction(task.draw_rhandle);
-task.map.removeInteraction(select);
-task.map.removeInteraction(modify);
-var features = task.source_rhandle.getFeatures();
-for(i=0;i<features.length;i++) {
-task.source_rhandle.removeFeature(features[i]);
-}
-task.map.addInteraction(task.draw_rhandle);
-task.rhandle = false;
 } else {
 task.map.removeInteraction(task.draw_section);
 task.map.removeInteraction(select);
