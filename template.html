@@ -782,19 +782,19 @@ task.answer.dimension = dimension
 } 
 if (task.external) {
 var features = task.source_external.getFeatures();
-var polygons = [];
+var lines = [];
 for(i=0;i<features.length;i++) {
 var g = features[i].getGeometry();
-polygons.push(g.getCoordinates());
+lines.push(g.getCoordinates());
 }
 task.answer.external = lines;
 } 
 if (task.section) {
 var features = task.source_section.getFeatures();
-var polygons = [];
+var lines = [];
 for(i=0;i<features.length;i++) {
 var g = features[i].getGeometry();
-polygons.push(g.getCoordinates());
+lines.push(g.getCoordinates());
 }
 task.answer.section = lines;
 } 
