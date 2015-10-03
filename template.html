@@ -150,7 +150,7 @@ Task DOM for loading the S3 Images using class="skeleton" to identify the elemen
 		</div>
 		
 		<div id="step3" style="display:none;">
-			<h1>Step 3 of 4. Draw a line between the handle section and the handle hole:</h1>
+			<h1>Step 3 of 3. Draw a line between the handle section and the handle hole:</h1>
 			<div class="btn-group">
 				<button id="status" type="button" class="btn btn-default btn-type disabled" name="loading" value="loading" title="Whether your task has fully loaded or not.">
 					Photo loaded
@@ -520,101 +520,6 @@ color: '#ffcc33'
 })
 });
 
-task.internal = new ol.layer.Vector({
-source: task.source_internal,
-style: new ol.style.Style({
-fill: new ol.style.Fill({
-color: 'rgba(255, 255, 255, 0.2)'
-}),
-stroke: new ol.style.Stroke({
-color: '#FF00FF',
-width: 2
-}),
-image: new ol.style.Circle({
-radius: 7,
-fill: new ol.style.Fill({
-color: '#FF00FF'
-})
-})
-})
-});
-
-task.midline = new ol.layer.Vector({
-source: task.source_midline,
-style: new ol.style.Style({
-fill: new ol.style.Fill({
-color: 'rgba(255, 255, 255, 0.2)'
-}),
-stroke: new ol.style.Stroke({
-color: '#FF7F50',
-width: 2
-}),
-image: new ol.style.Circle({
-radius: 7,
-fill: new ol.style.Fill({
-color: '#FF7F50'
-})
-})
-})
-});
-
-task.neckjoin = new ol.layer.Vector({
-source: task.source_neckjoin,
-style: new ol.style.Style({
-fill: new ol.style.Fill({
-color: 'rgba(255, 255, 255, 0.2)'
-}),
-stroke: new ol.style.Stroke({
-color: '#B22222',
-width: 2
-}),
-image: new ol.style.Circle({
-radius: 7,
-fill: new ol.style.Fill({
-color: '#B22222'
-})
-})
-})
-});
-
-task.lhandle = new ol.layer.Vector({
-source: task.source_lhandle,
-style: new ol.style.Style({
-fill: new ol.style.Fill({
-color: 'rgba(255, 255, 255, 0.2)'
-}),
-stroke: new ol.style.Stroke({
-color: '#800080',
-width: 2
-}),
-image: new ol.style.Circle({
-radius: 7,
-fill: new ol.style.Fill({
-color: '#800080'
-})
-})
-})
-});
-
-task.rhandle = new ol.layer.Vector({
-source: task.source_rhandle,
-style: new ol.style.Style({
-fill: new ol.style.Fill({
-color: 'rgba(255, 255, 255, 0.2)'
-}),
-stroke: new ol.style.Stroke({
-color: '#800080',
-width: 2
-}),
-image: new ol.style.Circle({
-radius: 7,
-fill: new ol.style.Fill({
-color: '#800080'
-})
-})
-})
-});
-
 task.section = new ol.layer.Vector({
 source: task.source_section,
 style: new ol.style.Style({
@@ -664,11 +569,6 @@ imageExtent: task.pixelProjection.getExtent()
 ,
 task.scalebar,
 task.external,
-task.internal,
-task.midline,
-task.neckjoin,
-task.lhandle,
-task.rhandle,
 task.section,
 ],
 renderer: 'canvas',
@@ -690,31 +590,11 @@ type: 'LineString',
 });
 task.draw_external = new ol.interaction.Draw({
 source: task.source_external,
-type: 'Polygon',
-});
-task.draw_internal = new ol.interaction.Draw({
-source: task.source_internal,
-type: 'Polygon',
-});
-task.draw_midline = new ol.interaction.Draw({
-source: task.source_midline,
-type: 'Polygon',
-});
-task.draw_neckjoin = new ol.interaction.Draw({
-source: task.source_neckjoin,
-type: 'Polygon',
-});
-task.draw_lhandle = new ol.interaction.Draw({
-source: task.source_lhandle,
-type: 'Polygon',
-});
-task.draw_rhandle = new ol.interaction.Draw({
-source: task.source_rhandle,
-type: 'Polygon',
+type: 'LineString',
 });
 task.draw_section = new ol.interaction.Draw({
 source: task.source_section,
-type: 'Polygon',
+type: 'LineString',
 });
 
 // When the first  polygon or line is completed, remove the drawInteraction
