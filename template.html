@@ -788,51 +788,6 @@ var g = features[i].getGeometry();
 polygons.push(g.getCoordinates());
 }
 task.answer.external = lines;
-}
-if (task.internal) {
-var features = task.source_internal.getFeatures();
-var polygons = [];
-for(i=0;i<features.length;i++) {
-var g = features[i].getGeometry();
-polygons.push(g.getCoordinates());
-}
-task.answer.internal = polygons;
-}
-if (task.midline) {
-var features = task.source_midline.getFeatures();
-var polygons = [];
-for(i=0;i<features.length;i++) {
-var g = features[i].getGeometry();
-polygons.push(g.getCoordinates());
-}
-task.answer.midline = polygons;
-}
-if (task.neckjoin) {
-var features = task.source_neckjoin.getFeatures();
-var polygons = [];
-for(i=0;i<features.length;i++) {
-var g = features[i].getGeometry();
-polygons.push(g.getCoordinates());
-}
-task.answer.neckjoin = polygons;
-} 
-if (task.lhandle) {
-var features = task.source_lhandle.getFeatures();
-var polygons = [];
-for(i=0;i<features.length;i++) {
-var g = features[i].getGeometry();
-polygons.push(g.getCoordinates());
-}
-task.answer.lhandle = polygons;
-}
-if (task.rhandle) {
-var features = task.source_rhandle.getFeatures();
-var polygons = [];
-for(i=0;i<features.length;i++) {
-var g = features[i].getGeometry();
-polygons.push(g.getCoordinates());
-}
-task.answer.rhandle = polygons;
 } 
 if (task.section) {
 var features = task.source_section.getFeatures();
@@ -843,12 +798,11 @@ polygons.push(g.getCoordinates());
 }
 task.answer.section = lines;
 } 
-task.answer.comments = $('#comments :input').val();
 
 pybossa.saveTask(task.id, task.answer).done(function() {
 $("#success").fadeIn(500).fadeOut(5500);
 deferred.resolve();
-$("#step9").hide();
+$("#step3").hide();
 $("#map_" + task.id).remove();
 });
 $("#loading").fadeIn(500);
