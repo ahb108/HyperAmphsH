@@ -122,7 +122,7 @@ Task DOM for loading the S3 Images using class="skeleton" to identify the elemen
 		</div>
 
 		<div id="step2" style="display:none;">
-			<h1>Step 2 of 2. Draw the break between the amphora body and its left handle:</h1>
+			<h1>Step 2 of 2. Draw a line distinguishing the left handle from the amphora's external profile:</h1>
 			<div class="btn-group">
 				<button id="status" type="button" class="btn btn-default btn-type disabled" name="loading" value="loading" title="Whether your task has fully loaded or not.">
 					Photo loaded
@@ -143,13 +143,11 @@ Task DOM for loading the S3 Images using class="skeleton" to identify the elemen
 				</button>
 			</div>
 			<div class="btn-group">
-				<button id="btn-save" class="btn btn-success btn-answer" value='save' title="Submit both steps and complete task.">
+				<button id="btn-save" class="btn btn-success btn-answer" value='save' title="Submit all steps and complete task.">
 					<i class="icon icon-white icon-save"></i> Submit
 				</button>
 			</div>
 		</div>
-	</div>
-</div>
 
 <div class="row">
 	<!-- Success and Error Messages for the user -->
@@ -373,7 +371,7 @@ Task DOM for loading the S3 Images using class="skeleton" to identify the elemen
 		} else {
 			$("#prevBtn").show();
 		}
-		if (step == 1) {
+		if (step == 8) {
 			$("#nextBtn").hide();
 			$("#closeBtn").show();
 		}
@@ -389,6 +387,14 @@ pybossa.userProgress('HyperAmphsH').done(function(data){
 
 console.log('Tasks done so far: ' + data.done);
 
+if ((data.done == 1) && ($.cookie('surveyAmphRev') === undefined)){
+$("#survey").modal('show');
+$.cookie('surveyAmphRev', 'shown', { path: '/'});
+}
+if ((data.done == 25) && ($.cookie('survey25AmphRev') === undefined)){
+$("#survey25").modal('show');
+$.cookie('survey25AmphRev', 'shown', { path: '/'});
+}
 var pct = Math.round((data.done*100)/data.total);
 $("#progress").css("width", pct.toString() +"%");
 $("#progress").attr("title", pct.toString() + "% completed!");
@@ -528,7 +534,31 @@ type: 'LineString',
 });
 task.draw_external = new ol.interaction.Draw({
 source: task.source_external,
-type: 'LineString',
+type: 'Polygon',
+});
+task.draw_internal = new ol.interaction.Draw({
+source: task.source_internal,
+type: 'Polygon',
+});
+task.draw_midline = new ol.interaction.Draw({
+source: task.source_midline,
+type: 'Polygon',
+});
+task.draw_neckjoin = new ol.interaction.Draw({
+source: task.source_neckjoin,
+type: 'Polygon',
+});
+task.draw_lhandle = new ol.interaction.Draw({
+source: task.source_lhandle,
+type: 'Polygon',
+});
+task.draw_rhandle = new ol.interaction.Draw({
+source: task.source_rhandle,
+type: 'Polygon',
+});
+task.draw_section = new ol.interaction.Draw({
+source: task.source_section,
+type: 'Polygon',
 });
 
 // When the first  polygon or line is completed, remove the drawInteraction
@@ -537,6 +567,24 @@ task.scalebar = true;
 });
 task.draw_external.on('drawend', function(evt) {
 task.external = true;
+});
+task.draw_internal.on('drawend', function(evt) {
+task.internal = true;
+});
+task.draw_midline.on('drawend', function(evt) {
+task.midline = true;
+});
+task.draw_neckjoin.on('drawend', function(evt) {
+task.neckjoin = true;
+});
+task.draw_lhandle.on('drawend', function(evt) {
+task.lhandle = true;
+});
+task.draw_rhandle.on('drawend', function(evt) {
+task.rhandle = true;
+});
+task.draw_section.on('drawend', function(evt) {
+task.section = true;
 });
 
 // Enforce just two points on scalebar line:
@@ -565,9 +613,22 @@ task.answer = {
 'scalebar': [],
 'dimension': 0,
 'external': [],
+'internal': [],
+'midline': [],
+'neckjoin': [],
+'lhandle': [],
+'rhandle': [],
+'section': [],
+'comments': "None",
 'img': task.info.url_b};
 task.scalebar = false;
 task.external = false;
+task.internal = false;
+task.midline = false;
+task.neckjoin = false;
+task.lhandle = false;
+task.rhandle = false;
+task.section = false;
 }
 else {
 deferred.resolve(task);
@@ -597,17 +658,42 @@ task.map.removeInteraction(modify);
 task.map.removeInteraction(select);
 if ($("#scalebar").hasClass("active")) {
 task.map.addInteraction(task.draw_scalebar);
-} else {
+} else if ($("#external").hasClass("active")) {
 task.map.addInteraction(task.draw_external);
+} else if ($("#internal").hasClass("active")) {
+task.map.addInteraction(task.draw_internal);
+} else if ($("#midline").hasClass("active")) {
+task.map.addInteraction(task.draw_midline);
+} else if ($("#neckjoin").hasClass("active")) {
+task.map.addInteraction(task.draw_neckjoin);
+} else if ($("#lhandle").hasClass("active")) {
+task.map.addInteraction(task.draw_lhandle);
+} else if ($("#rhandle").hasClass("active")) {
+task.map.addInteraction(task.draw_rhandle);
+} else {
+task.map.addInteraction(task.draw_section);
 }
+
 } else if (answer == 'edit') {
 $("#draw").removeClass("active");
 $("#delete").removeClass("active");
 $("#edit").addClass("active");
 if ($("#scalebar").hasClass("active")) {
 task.map.removeInteraction(task.draw_scalebar);
-} else {
+} else if ($("#external").hasClass("active")) {
 task.map.removeInteraction(task.draw_external);
+} else if ($("#internal").hasClass("active")) {
+task.map.removeInteraction(task.draw_internal);
+} else if ($("#midline").hasClass("active")) {
+task.map.removeInteraction(task.draw_midline);
+} else if ($("#neckjoin").hasClass("active")) {
+task.map.removeInteraction(task.draw_neckjoin);
+} else if ($("#lhandle").hasClass("active")) {
+task.map.removeInteraction(task.draw_lhandle);
+} else if ($("#rhandle").hasClass("active")) {
+task.map.removeInteraction(task.draw_rhandle);
+} else {
+task.map.removeInteraction(task.draw_section);
 }
 task.map.addInteraction(select);
 task.map.addInteraction(modify);
@@ -626,7 +712,7 @@ task.source_scalebar.removeFeature(features[i]);
 }
 task.map.addInteraction(task.draw_scalebar);
 task.scalebar = false;
-} else {
+} else if ($("#external").hasClass("active")) {
 task.map.removeInteraction(task.draw_external);
 task.map.removeInteraction(select);
 task.map.removeInteraction(modify);
@@ -636,7 +722,67 @@ task.source_external.removeFeature(features[i]);
 }
 task.map.addInteraction(task.draw_external);
 task.external = false;
+} else if ($("#internal").hasClass("active")) {
+task.map.removeInteraction(task.draw_internal);
+task.map.removeInteraction(select);
+task.map.removeInteraction(modify);
+var features = task.source_external.getFeatures();
+for(i=0;i<features.length;i++) {
+task.source_internal.removeFeature(features[i]);
 }
+task.map.addInteraction(task.draw_internal);
+task.internal = false;
+} else if ($("#midline").hasClass("active")) {
+task.map.removeInteraction(task.draw_midline);
+task.map.removeInteraction(select);
+task.map.removeInteraction(modify);
+var features = task.source_midline.getFeatures();
+for(i=0;i<features.length;i++) {
+task.source_midline.removeFeature(features[i]);
+}
+task.map.addInteraction(task.draw_midline);
+task.midline = false;
+} else if ($("#neckjoin").hasClass("active")) {
+task.map.removeInteraction(task.draw_neckjoin);
+task.map.removeInteraction(select);
+task.map.removeInteraction(modify);
+var features = task.source_neckjoin.getFeatures();
+for(i=0;i<features.length;i++) {
+task.source_neckjoin.removeFeature(features[i]);
+}
+task.map.addInteraction(task.draw_neckjoin);
+task.neckjoin = false;
+} else if ($("#lhandle").hasClass("active")) {
+task.map.removeInteraction(task.draw_lhandle);
+task.map.removeInteraction(select);
+task.map.removeInteraction(modify);
+var features = task.source_lhandle.getFeatures();
+for(i=0;i<features.length;i++) {
+task.source_lhandle.removeFeature(features[i]);
+}
+task.map.addInteraction(task.draw_lhandle);
+task.lhandle = false;
+} else if ($("#rhandle").hasClass("active")) {
+task.map.removeInteraction(task.draw_rhandle);
+task.map.removeInteraction(select);
+task.map.removeInteraction(modify);
+var features = task.source_rhandle.getFeatures();
+for(i=0;i<features.length;i++) {
+task.source_rhandle.removeFeature(features[i]);
+}
+task.map.addInteraction(task.draw_rhandle);
+task.rhandle = false;
+} else {
+task.map.removeInteraction(task.draw_section);
+task.map.removeInteraction(select);
+task.map.removeInteraction(modify);
+var features = task.source_section.getFeatures();
+for(i=0;i<features.length;i++) {
+task.source_section.removeFeature(features[i]);
+}
+task.map.addInteraction(task.draw_section);
+task.section = false;
+} 
 $("#draw").addClass("active");
 $("#delete").removeClass("active");
 } 
@@ -653,7 +799,56 @@ $("#scalebar").removeClass("active");
 $("#external").addClass("active");
 task.map.removeInteraction(task.draw_scalebar);
 task.map.addInteraction(task.draw_external);
-});
+} else if (answer == 'gotostep3') {
+$("#step2").toggle();
+$("#step3").toggle();
+$("#external").removeClass("active");
+$("#internal").addClass("active");
+task.map.removeInteraction(task.draw_external);
+task.map.addInteraction(task.draw_internal);
+} else if (answer == 'gotostep4') {
+$("#internal").removeClass("active");
+$("#midline").addClass("active");
+$("#step3").toggle();
+$("#step4").toggle();
+task.map.removeInteraction(task.draw_internal);
+task.map.addInteraction(task.draw_midline);
+} else if (answer == 'gotostep5') {
+$("#midline").removeClass("active");
+$("#neckjoin").addClass("active");
+$("#step4").toggle();
+$("#step5").toggle();
+task.map.removeInteraction(task.draw_midline);
+task.map.addInteraction(task.draw_neckjoin);
+} else if (answer == 'gotostep6') {
+$("#neckjoin").removeClass("active");
+$("#lhandle").addClass("active");
+$("#step5").toggle();
+$("#step6").toggle();
+task.map.removeInteraction(task.draw_neckjoin);
+task.map.addInteraction(task.draw_lhandle);
+} else if (answer == 'gotostep7') {
+$("#lhandle").removeClass("active");
+$("#rhandle").addClass("active");
+$("#step6").toggle();
+$("#step7").toggle();
+task.map.removeInteraction(task.draw_lhandle);
+task.map.addInteraction(task.draw_rhandle);
+} else if (answer == 'gotostep8') {
+$("#rhandle").removeClass("active");
+$("#section").addClass("active");
+$("#step7").toggle();
+$("#step8").toggle();
+task.map.removeInteraction(task.draw_rhandle);
+task.map.addInteraction(task.draw_section);
+} else {
+$("#section").removeClass("active");
+$("#comments").addClass("active");
+$("#step8").toggle();
+$("#step9").toggle();
+task.map.removeInteraction(task.draw_section);
+}
+}});
 
 $('.btn-answer').off('click').on('click', function(evt) {
 var answer = $(evt.target).attr("value");
@@ -682,6 +877,61 @@ polygons.push(g.getCoordinates());
 }
 task.answer.external = polygons;
 }
+if (task.internal) {
+var features = task.source_internal.getFeatures();
+var polygons = [];
+for(i=0;i<features.length;i++) {
+var g = features[i].getGeometry();
+polygons.push(g.getCoordinates());
+}
+task.answer.internal = polygons;
+}
+if (task.midline) {
+var features = task.source_midline.getFeatures();
+var polygons = [];
+for(i=0;i<features.length;i++) {
+var g = features[i].getGeometry();
+polygons.push(g.getCoordinates());
+}
+task.answer.midline = polygons;
+}
+if (task.neckjoin) {
+var features = task.source_neckjoin.getFeatures();
+var polygons = [];
+for(i=0;i<features.length;i++) {
+var g = features[i].getGeometry();
+polygons.push(g.getCoordinates());
+}
+task.answer.neckjoin = polygons;
+} 
+if (task.lhandle) {
+var features = task.source_lhandle.getFeatures();
+var polygons = [];
+for(i=0;i<features.length;i++) {
+var g = features[i].getGeometry();
+polygons.push(g.getCoordinates());
+}
+task.answer.lhandle = polygons;
+}
+if (task.rhandle) {
+var features = task.source_rhandle.getFeatures();
+var polygons = [];
+for(i=0;i<features.length;i++) {
+var g = features[i].getGeometry();
+polygons.push(g.getCoordinates());
+}
+task.answer.rhandle = polygons;
+} 
+if (task.section) {
+var features = task.source_section.getFeatures();
+var polygons = [];
+for(i=0;i<features.length;i++) {
+var g = features[i].getGeometry();
+polygons.push(g.getCoordinates());
+}
+task.answer.section = polygons;
+} 
+task.answer.comments = $('#comments :input').val();
 
 pybossa.saveTask(task.id, task.answer).done(function() {
 $("#success").fadeIn(500).fadeOut(5500);
