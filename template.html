@@ -753,11 +753,12 @@ $("#external").addClass("active");
 task.map.removeInteraction(task.draw_scalebar);
 task.map.addInteraction(task.draw_external);
 } else {
-$("#section").removeClass("active");
-$("#comments").addClass("active");
+$("#external").removeClass("active");
+$("#section").addClass("active");
 $("#step2").toggle();
 $("#step3").toggle();
-task.map.removeInteraction(task.draw_section);
+task.map.removeInteraction(task.draw_external);
+task.map.addInteraction(task.draw_section);
 }
 }});
 
