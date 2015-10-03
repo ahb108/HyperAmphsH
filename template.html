@@ -475,11 +475,6 @@ extent: [0, 0, 100, 100]
 
 task.source_scalebar = new ol.source.Vector();
 task.source_external = new ol.source.Vector();
-task.source_internal = new ol.source.Vector();
-task.source_midline = new ol.source.Vector();
-task.source_neckjoin = new ol.source.Vector();
-task.source_lhandle = new ol.source.Vector();
-task.source_rhandle = new ol.source.Vector();
 task.source_section = new ol.source.Vector();
 
 task.scalebar = new ol.layer.Vector({
@@ -623,6 +618,24 @@ task.draw_scalebar.on('drawstart', function(e) {
   });
  });
 task.draw_scalebar.on('drawend', function(e) {
+  ol.Observable.unByKey(listenerKey);
+});
+
+// Enforce just two points on section line:
+var listenerKey;
+task.draw_section.on('drawstart', function(e) {
+  var feature = e.feature;
+  var lineString = feature.getGeometry();
+  // finish the drawing when the linestring has 2 vertices
+  listenerKey = lineString.on('change', function(e) {
+    var lineString = e.target;
+    var vertices = lineString.getCoordinates();
+    if (vertices.length == 3) {
+      task.draw_section.finishDrawing();
+    }
+  });
+ });
+task.draw_section.on('drawend', function(e) {
   ol.Observable.unByKey(listenerKey);
 });
 
