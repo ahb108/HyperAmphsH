@@ -470,7 +470,7 @@ task.info.image = img;
 task.pixelProjection = new ol.proj.Projection({
 code: 'pixel',
 units: 'pixels',
-extent: [0, 0, 100, 100]
+extent: [0, 0, task.info.imcols, task.info.imrows]
 });
 
 task.source_scalebar = new ol.source.Vector();
@@ -556,7 +556,7 @@ html: '&copy; <a href="http://micropasts.org">MicroPasts</a>'
 })
 ],
 url: task.info.url_b,
-imageSize: [2000, 2000],
+imageSize: [task.info.imcols, task.info.imrows],
 projection: task.pixelProjection,
 imageExtent: task.pixelProjection.getExtent()
 })
